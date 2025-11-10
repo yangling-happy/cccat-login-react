@@ -6,7 +6,7 @@ const LoginForm = () => {
     password: "",
   });
   const [errors, setErrors] = useState({});
-  const [isLoading, setIsLoading] = useState(false); // 新增：加载状态
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -19,26 +19,26 @@ const LoginForm = () => {
   const validate = () => {
     const newErrors = {};
     if (!formData.username.trim()) {
-      newErrors.username = "用户名不能为空";
+      newErrors.username = "Username is required.";
     }
     if (!formData.password) {
-      newErrors.password = "密码不能为空";
+      newErrors.password = "Password is required.";
     } else if (formData.password.length < 6) {
-      newErrors.password = "密码至少6位";
+      newErrors.password = "Password must be at least 6 characters long.";
     } else {
       const hasLowerCase = /[a-z]/.test(formData.password);
       const hasUpperCase = /[A-Z]/.test(formData.password);
       const hasNumber = /\d/.test(formData.password);
 
       if (!(hasLowerCase && hasUpperCase && hasNumber)) {
-        newErrors.password = "密码至少包含大小写字母和数字";
+        newErrors.password =
+          "Requires uppercase, lowercase letters and numbers.";
       }
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // 修改：对接后端登录接口
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
@@ -55,11 +55,14 @@ const LoginForm = () => {
 
         if (!response.ok) {
           // 登录失败（后端返回错误信息）
-          throw new Error(data.message || "登录失败，请检查用户名和密码");
+          throw new Error(
+            data.message ||
+              "Oops! CCcat-login failed. Please check your username and password!"
+          );
         }
 
         // 登录成功
-        alert("登录成功！欢迎回来，" + data.username);
+        alert("Login successful! Welcome back," + data.username);
         // 可添加跳转逻辑，例如：window.location.href = "/home";
       } catch (error) {
         // 显示后端返回的错误或网络错误
@@ -123,7 +126,7 @@ const LoginForm = () => {
         )}
         <br />
         <button type="submit" disabled={isLoading}>
-          {isLoading ? "登录中..." : "Login"}
+          {isLoading ? "Login..." : "Login"}
         </button>
       </form>
       <p>
