@@ -8,7 +8,7 @@ const Navbar = () => {
           <a href="/">Home</a>
         </li>
         <li>
-          <a href="/todo">ToDo</a>
+          <a href="/todo">Todo</a>
         </li>
         <li>
           <a href="/chat">Chat</a>

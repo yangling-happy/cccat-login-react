@@ -123,17 +123,18 @@ body {
   opacity: 0;
 }
 
-/* 确保表单元素垂直居中对齐 */
+/* 确保表单元素垂直居中对齐 - 已优化间距 */
 .login-container form {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+  gap: 2px !important;
 }
 
 .login-container form label {
   font-size: 20px;
-  /* 与图标保持间距 */
+  margin-bottom: 2px;
 }
 
 .login-container form input {
@@ -145,6 +146,7 @@ body {
   border-radius: 8px;
   border-color: #e0e0e0;
   background-color: #f5f5f5;
+  margin: 0 !important;
 }
 
 .login-container form input:focus {
@@ -164,7 +166,7 @@ body {
 
 .login-container form button {
   font-size: 20px;
-  margin: 20px 0;
+  margin: 8px 0 !important; /* 减少上下边距 */
   width: 260px; /* 与输入框保持一致 */
   height: 50px;
   border-radius: 8px;
@@ -185,7 +187,8 @@ svg {
   display: flex;
   align-items: center;
   justify-content: center; /* 居中对齐 */
-  width: 100%;
+  width: 260px;
+  margin-bottom: 2px !important; /* 减少底部间距 */
 }
 
 #gif,
@@ -225,9 +228,11 @@ svg {
 .error-message {
   color: #ff4d4f;
   font-size: 12px;
-  margin-top: 4px;
-  margin-bottom: 8px;
+  margin-top: 1px !important;
+  margin-bottom: 1px !important; /* 大幅减少间距 */
   text-align: left;
+  height: 12px;
+  min-height: 12px;
 }
 
 /* 媒体查询 */
@@ -266,4 +271,10 @@ svg {
   .left-side a h1 {
     font-size: 80px;
   }
+}
+
+/* 强制重置表单内所有元素的间距 */
+.login-container form > * {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }

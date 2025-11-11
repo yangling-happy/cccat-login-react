@@ -2,6 +2,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "../App"; // 根组件（包含左侧猫咪区域）
 import RegisterForm from "../components/RegisterForm"; // 注册表单
+import Todo from "./components/Todo";
 
 const AppRouter = () => {
   return (
@@ -14,6 +15,7 @@ const AppRouter = () => {
           path="/register"
           element={<App formComponent={<RegisterForm />} />}
         />
+        <Route path="/todo" element={<Todo />} />
       </Routes>
     </BrowserRouter>
   );
