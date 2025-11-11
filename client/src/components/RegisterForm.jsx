@@ -57,14 +57,38 @@ const RegisterForm = () => {
             password: formData.password,
           }),
         });
-        const data = await response.json();
-        if (!response.ok)
-          throw new Error(data.message || "Registration failed");
 
-        alert("Registration successful! Please log in.");
-        navigate("/"); // 跳回登录页
+        // 检查响应状态
+        if (!response.ok) {
+          let errorMessage = `HTTP错误: ${response.status} ${response.statusText}`;
+          try {
+            const errorData = await response.json();
+            errorMessage = errorData.message || errorMessage;
+          } catch (e) {
+            // 即使JSON解析失败，也获取文本内容
+            try {
+              const errorText = await response.text();
+              errorMessage = errorText || errorMessage;
+            } catch (e) {
+              // 忽略错误
+            }
+          }
+          throw new Error(errorMessage);
+        }
+
+        // 处理成功的JSON响应
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+          const data = await response.json();
+          alert("Registration successful! Please log in.");
+          navigate(`/?username=${encodeURIComponent(formData.username)}`);
+        } else {
+          const text = await response.text();
+          throw new Error(`服务器返回无效响应: ${text || response.statusText}`);
+        }
       } catch (error) {
-        alert(error.message);
+        console.error("注册错误:", error);
+        alert(`注册失败: ${error.message}`);
       } finally {
         setIsLoading(false);
       }

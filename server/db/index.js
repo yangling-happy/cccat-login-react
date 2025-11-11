@@ -7,8 +7,10 @@ const dbPath = path.resolve(__dirname, "cccat.db");
 // 表结构文件路径
 const schemaPath = path.resolve(__dirname, "schema.sql");
 
-// 连接数据库（开启日志便于调试）
-const db = new Database(dbPath, { verbose: console.log });
+// 连接数据库（生产环境建议关闭verbose日志）
+const db = new Database(dbPath, {
+  verbose: process.env.NODE_ENV === "development" ? console.log : null,
+});
 console.log("✅ 成功连接SQLite数据库（better-sqlite3）");
 
 // 读取并执行建表脚本（确保表存在）

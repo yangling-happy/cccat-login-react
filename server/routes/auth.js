@@ -44,27 +44,53 @@ router.post("/login", (req, res) => {
 });
 
 // 注册接口（用于创建测试用户）
+// 在 server/routes/auth.js 的 register 路由中
 router.post("/register", (req, res) => {
-  const { username, password } = req.body;
+  try {
+    const { username, password } = req.body;
+    console.log("收到注册请求:", { username }); // 添加此日志
 
-  // 密码加密（10为加密强度）
-  bcrypt.hash(password, 10, (err, hashedPassword) => {
-    if (err) {
-      return res.status(500).json({ message: "密码加密失败：" + err.message });
+    // 验证输入
+    if (!username || !password) {
+      return res.status(400).json({ message: "用户名和密码不能为空" });
     }
 
-    try {
-      // 插入用户到数据库（同步操作）
-      db.prepare("INSERT INTO users (username, password) VALUES (?, ?)").run(
-        username,
-        hashedPassword
-      );
-      res.status(201).json({ message: "注册成功！可以登录了" });
-    } catch (err) {
-      // 用户名已存在时触发唯一约束错误
-      return res.status(400).json({ message: "用户名已被注册" });
-    }
-  });
+    bcrypt.hash(password, 10, (err, hashedPassword) => {
+      if (err) {
+        console.error("密码加密错误:", err);
+        return res
+          .status(500)
+          .json({ message: "密码加密失败：" + err.message });
+      }
+
+      try {
+        console.log("尝试插入用户:", username);
+        const result = db
+          .prepare("INSERT INTO users (username, password) VALUES (?, ?)")
+          .run(username, hashedPassword);
+        console.log("用户插入成功:", result);
+        res.status(201).json({
+          message: "注册成功！可以登录了",
+          userId: result.lastInsertRowid,
+        });
+      } catch (err) {
+        console.error("数据库插入错误:", err);
+        if (err.message && err.message.includes("UNIQUE constraint failed")) {
+          return res.status(400).json({ message: "用户名已被注册" });
+        }
+        return res.status(500).json({
+          message: "注册失败",
+          error:
+            process.env.NODE_ENV === "development"
+              ? err.message
+              : "服务器内部错误",
+        });
+      }
+    });
+  } catch (error) {
+    console.error("注册过程中发生未捕获的错误:", error);
+    return res.status(500).json({ message: "服务器内部错误" });
+  }
 });
 
 module.exports = router;

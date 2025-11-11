@@ -1,12 +1,15 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 
 const LoginForm = () => {
+  const [searchParams] = useSearchParams(); // 获取 URL 查询参数
+  const initialUsername = searchParams.get("username") || "";
+
   const [formData, setFormData] = useState({
-    username: "",
+    username: initialUsername,
     password: "",
   });
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({}); // 添加 errors 状态
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
