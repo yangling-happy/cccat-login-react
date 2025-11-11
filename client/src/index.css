@@ -1,12 +1,9 @@
-/* 1. 统一注释格式，使用块级注释分隔逻辑区域 */
-/* 基础样式重置 */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* 2. 调整选择器顺序，按DOM层级/渲染顺序排列 */
 html {
   width: 100%;
   height: 100%;
@@ -18,7 +15,7 @@ body {
   display: flex;
 }
 
-/* 根元素设置 */
+/* 确保根元素设置 */
 #root {
   width: 100%;
   height: 100%;
@@ -31,7 +28,14 @@ body {
   flex-direction: column;
 }
 
-/* 导航栏样式 */
+/* 主要布局容器 */
+.main-layout {
+  display: flex;
+  width: 100%;
+  height: calc(100% - 40px); /* 减去导航栏高度 */
+  margin-top: 40px; /* 为固定导航栏留出空间 */
+}
+
 .navbar {
   width: 100%;
   height: 40px;
@@ -43,32 +47,24 @@ body {
   z-index: 1000;
 }
 
+.navbar a {
+  text-decoration: none;
+  color: black;
+  font-size: 20px;
+  line-height: 40px;
+  margin-left: 20px;
+  display: block;
+}
+
 .navbar ul {
   display: flex;
   flex-direction: row;
   list-style-type: none;
 }
 
-/* 3. 修复选择器嵌套顺序（先父后子） */
-.navbar a {
-  display: block;
-  text-decoration: none;
-  color: black;
-  font-size: 20px;
-  line-height: 40px;
-  margin-left: 20px;
-}
-
-/* 主要布局容器 */
-.main-layout {
-  display: flex;
-  width: 100%;
-  height: calc(100% - 40px); /* 减去导航栏高度 */
-  margin-top: 40px; /* 为固定导航栏留出空间 */
-}
-
 /* 左侧区域 - 50% */
 .left-side {
+  background-color: #fff3c4;
   width: 50%; /* 55开布局 */
   height: 100%;
   display: flex;
@@ -77,72 +73,6 @@ body {
   align-items: center;
   padding: 20px;
   text-align: center;
-  background-color: #fff3c4;
-}
-
-/* 左侧标题样式 */
-.left-side a h1 {
-  margin-bottom: 20px;
-  font-family: "Times New Roman", Times, sans-serif;
-  font-size: 180px;
-  font-weight: bold;
-  color: #ffaaaa;
-  text-shadow: 5px 5px 5px white;
-  text-align: center;
-  line-height: 1;
-  letter-spacing: -2px;
-  word-spacing: 2px;
-  text-transform: uppercase;
-  text-decoration: underline;
-}
-
-.left-side a h1:hover {
-  color: #ff7777;
-  text-shadow: 8px 8px 8px white;
-}
-
-/* 图片容器样式 */
-.cats {
-  display: flex;
-  margin-top: 20px; /* 调整边距 */
-  margin-bottom: 30px; /* 调整边距 */
-  font-size: 0; /* 消除img标签之间的空隙 */
-}
-
-.gif-wrap {
-  position: relative;
-  cursor: pointer;
-}
-
-/* 4. 合并同类选择器，统一设置图片尺寸 */
-#gif,
-#png,
-.static {
-  width: 200px;
-  height: 200px;
-}
-
-.static {
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0;
-}
-
-#gif {
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0;
-}
-
-/* 图片悬停效果 */
-.gif-wrap:hover .static {
-  opacity: 1;
-}
-
-.gif-wrap:hover #gif {
-  opacity: 1;
 }
 
 /* 右侧登录区域 - 50% */
@@ -158,11 +88,42 @@ body {
   padding-top: 20px;
 }
 
-.login-container h1 {
-  font-family: "Lucida Console", Monaco, monospace;
+.cats {
+  font-size: 0; /*消除img标签之间的空隙*/
+  display: flex;
+  margin-top: 20px; /* 调整边距 */
+  margin-bottom: 30px; /* 调整边距 */
 }
 
-/* 表单样式 */
+.gif-wrap {
+  position: relative;
+  cursor: pointer;
+}
+
+.static {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+.gif-wrap:hover .static {
+  opacity: 1;
+}
+
+/* 右侧：图片悬停变GIF */
+.gif-wrap:hover #gif {
+  opacity: 1;
+}
+
+#gif {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+/* 确保表单元素垂直居中对齐 */
 .login-container form {
   display: flex;
   flex-direction: column;
@@ -175,39 +136,23 @@ body {
   /* 与图标保持间距 */
 }
 
-/* 输入框组样式 */
-.input-group {
-  display: flex;
-  align-items: center;
-  justify-content: center; /* 居中对齐 */
-  width: 100%;
-}
-
-svg {
-  width: 70px;
-  height: 50px;
-  margin-right: 10px;
-}
-
-/* 输入框样式 */
 .login-container form input {
+  font-size: 18px;
+  padding: 8px;
   width: 260px; /* 固定宽度 */
   min-width: 220px; /* 最小宽度 */
   height: 48px;
-  padding: 8px;
-  font-size: 18px;
   border-radius: 8px;
   border-color: #e0e0e0;
   background-color: #f5f5f5;
 }
 
-/* 5. 按状态顺序排列（正常->hover->focus->active） */
-.login-container form input:hover {
+.login-container form input:focus {
   border-color: #ffe6e6;
   background-color: #ffffff;
 }
 
-.login-container form input:focus {
+.login-container form input:hover {
   border-color: #ffe6e6;
   background-color: #ffffff;
 }
@@ -217,13 +162,11 @@ svg {
   background-color: #ffd9d9;
 }
 
-/* 按钮样式 */
 .login-container form button {
+  font-size: 20px;
+  margin: 20px 0;
   width: 260px; /* 与输入框保持一致 */
   height: 50px;
-  margin: 20px 0;
-  padding: 0; /* 补充默认值，避免浏览器差异 */
-  font-size: 20px;
   border-radius: 8px;
   border: none;
   background-color: #ffa2a2;
@@ -231,20 +174,63 @@ svg {
   cursor: pointer;
 }
 
-/* 错误提示样式 */
+svg {
+  width: 70px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+/* 让输入框和猫爪图标垂直居中对齐 */
+.input-group {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 居中对齐 */
+  width: 100%;
+}
+
+#gif,
+#png {
+  width: 200px;
+  height: 200px;
+}
+
+.left-side a h1 {
+  font-family: "Times New Roman", Times, sans-serif;
+  font-size: 180px;
+  font-weight: bold;
+  color: #ffaaaa;
+  margin-bottom: 20px;
+  text-shadow: 5px 5px 5px white;
+  text-align: center;
+  line-height: 1;
+  letter-spacing: -2px;
+  word-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: underline;
+}
+
+.left-side a h1:hover {
+  color: #ff7777;
+  text-shadow: 8px 8px 8px white;
+}
+
+.login-container h1 {
+  font-family: "Lucida Console", Monaco, monospace;
+}
+
 .error {
   border: 1px solid #ff4d4f;
 }
 
 .error-message {
+  color: #ff4d4f;
+  font-size: 12px;
   margin-top: 4px;
   margin-bottom: 8px;
-  font-size: 12px;
-  color: #ff4d4f;
   text-align: left;
 }
 
-/* 媒体查询（放在最后） */
+/* 媒体查询 */
 @media screen and (max-width: 768px) {
   .main-layout {
     flex-direction: column;
@@ -252,9 +238,9 @@ svg {
   }
 
   .left-side {
-    display: none; /* 小屏隐藏左侧 */
     width: 100%;
     height: auto;
+    display: none; /* 小屏隐藏左侧 */
   }
 
   .login-container {
@@ -266,14 +252,14 @@ svg {
 
   /* 小屏时输入框不溢出屏幕 */
   .login-container form input {
-    width: 260px;
     min-width: auto;
+    width: 260px;
   }
 
   /* 小屏时按钮宽度适配 */
   .login-container form button {
-    width: 260px;
     min-width: auto;
+    width: 260px;
   }
 
   /* 小屏时左侧标题字体适配 */
