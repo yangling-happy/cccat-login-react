@@ -1,0 +1,60 @@
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import "../Welcome.css"; // 需要创建对应的CSS文件
+
+const Welcome = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const username = location.state?.username || "User";
+
+  return (
+    <div className="welcome-page">
+      {/* 导航栏保持一致 */}
+      <nav className="navbar">
+        <ul>
+          <li>
+            <a href="/">PurrSpace</a>
+          </li>
+          <li>
+            <a href="/todo">Todos</a>
+          </li>
+          <li>
+            <a href="/chat">Chat</a>
+          </li>
+        </ul>
+      </nav>
+
+      <div className="welcome-container">
+        <div className="welcome-header">
+          <h1>🎉 Welcome to CCcat Hub !</h1>
+          <p className="welcome-subtitle">🐱What would you like to do today?</p>
+        </div>
+
+        <div className="welcome-cards">
+          <div className="welcome-card" onClick={() => navigate("/todo")}>
+            <div className="card-icon">📝</div>
+            <h3>Todo List</h3>
+            <p>Manage your tasks and stay organized</p>
+          </div>
+
+          <div className="welcome-card" onClick={() => navigate("/chat")}>
+            <div className="card-icon">💬</div>
+            <h3>Chat Room</h3>
+            <p>Have a conversation with friends</p>
+          </div>
+
+          <div className="welcome-card" onClick={() => navigate("/")}>
+            <div className="card-icon">🚪</div>
+            <h3>Logout</h3>
+            <p>End your current session</p>
+          </div>
+        </div>
+
+        <div className="welcome-footer">
+          <p>© 2025 A.Y.</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Welcome;

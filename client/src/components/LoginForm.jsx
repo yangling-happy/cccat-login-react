@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams(); // 获取 URL 查询参数
   const initialUsername = searchParams.get("username") || "";
 
@@ -67,7 +68,7 @@ const LoginForm = () => {
 
         // 登录成功
         alert("Login successful! Welcome back," + data.username);
-        // 可添加跳转逻辑，例如：window.location.href = "/home";
+        navigate("/welcome", { state: { username: data.username } }); // 添加跳转逻辑
       } catch (error) {
         // 显示后端返回的错误或网络错误
         alert(error.message);

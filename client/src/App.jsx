@@ -6,6 +6,7 @@ import LoginForm from "./components/LoginForm.jsx";
 import RegisterForm from "./components/RegisterForm.jsx";
 import Todo from "./components/ToDo.jsx";
 import Chat from "./components/Chat.jsx";
+import Welcome from "./components/Welcome.jsx";
 import "./index.css";
 
 // 定义带左侧区域的布局组件（局部复用，不单独抽离文件）
@@ -31,7 +32,7 @@ const App = () => {
         {/*独立渲染，不包含左侧区域 */}
         <Route path="/todo" element={<Todo />} />
         <Route path="/chat" element={<Chat />} />
-
+        <Route path="/welcome" element={<Welcome />} />
       </Routes>
     </div>
   );

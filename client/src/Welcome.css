@@ -1,0 +1,323 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+.welcome-page {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fff8e6 0%, #fff0f5 50%, #e6f7ff 100%);
+  padding-top: 40px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* 添加一些装饰性元素 */
+.welcome-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+      circle at 20% 80%,
+      rgba(255, 200, 200, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(200, 220, 255, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 40% 40%,
+      rgba(255, 255, 200, 0.05) 0%,
+      transparent 50%
+    );
+  pointer-events: none;
+}
+
+/* 导航栏样式保持与全局一致 */
+.navbar {
+  width: 100%;
+  height: 40px;
+  background: linear-gradient(90deg, #fee16b 0%, #ffd166 100%);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+.navbar ul {
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+  height: 100%;
+  align-items: center;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #5d4037;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 40px;
+  margin-left: 25px;
+  display: block;
+  transition: all 0.3s ease;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar a:hover {
+  color: #ff6b6b;
+  transform: translateY(-1px);
+}
+
+.welcome-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 20px 40px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.welcome-header {
+  margin-bottom: 80px;
+  position: relative;
+}
+
+.welcome-header h1 {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #ff6b6b;
+  margin-bottom: 0x;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 4px 8px rgba(255, 107, 107, 0.1);
+  position: relative;
+  display: inline-block;
+}
+
+.welcome-header h1::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, #ff6b6b, #ffd166);
+  border-radius: 2px;
+}
+
+.welcome-subtitle {
+  font-size: 1.3rem;
+  color: #5d4037;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 400;
+  margin-top: 30px;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.welcome-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  margin-bottom: 80px;
+  padding: 0 20px;
+}
+
+.welcome-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 40px 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ff6b6b, #ffd166, #7cb9ff);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.welcome-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 8px 16px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.welcome-card:hover::before {
+  opacity: 1;
+}
+
+.welcome-card:hover .card-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.card-icon {
+  font-size: 4rem;
+  margin-bottom: 25px;
+  transition: all 0.3s ease;
+  display: block;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+.welcome-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #333;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 600;
+  position: relative;
+}
+
+.welcome-card p {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.6;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  opacity: 0.8;
+}
+
+/* 为不同卡片添加微妙的颜色差异 */
+.welcome-card:nth-child(1):hover {
+  border-color: rgba(255, 107, 107, 0.3);
+}
+
+.welcome-card:nth-child(2):hover {
+  border-color: rgba(124, 185, 255, 0.3);
+}
+
+.welcome-card:nth-child(3):hover {
+  border-color: rgba(255, 209, 102, 0.3);
+}
+
+.welcome-footer {
+  color: #888;
+  font-size: 0.9rem;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255, 224, 178, 0.5);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  position: relative;
+}
+
+.welcome-footer::before {
+  content: "🐾";
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff8e6;
+  padding: 0 20px;
+  font-size: 1.2rem;
+}
+
+/* 响应式调整 */
+@media screen and (max-width: 768px) {
+  .welcome-container {
+    padding: 40px 15px 30px;
+  }
+
+  .welcome-header {
+    margin-bottom: 50px;
+  }
+
+  .welcome-header h1 {
+    font-size: 2.5rem;
+  }
+
+  .welcome-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .welcome-cards {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 0 10px;
+  }
+
+  .welcome-card {
+    padding: 30px 20px;
+  }
+
+  .card-icon {
+    font-size: 3rem;
+  }
+
+  .welcome-card:hover {
+    transform: translateY(-8px) scale(1.01);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .welcome-header h1 {
+    font-size: 2rem;
+  }
+
+  .welcome-subtitle {
+    font-size: 1rem;
+  }
+
+  .welcome-card h3 {
+    font-size: 1.3rem;
+  }
+
+  .welcome-card p {
+    font-size: 0.9rem;
+  }
+}
+
+/* 添加加载动画 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.welcome-header,
+.welcome-cards,
+.welcome-footer {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.welcome-cards {
+  animation-delay: 0.2s;
+}
+
+.welcome-footer {
+  animation-delay: 0.4s;
+}
