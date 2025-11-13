@@ -12,7 +12,6 @@ cccat-login-react/
 ├── LICENSE
 ├── README.md
 ├── package.json          # 项目总配置
-├── start-dev.bat         # 一键启动开发环境脚本（Windows）
 ├── client/               # 前端 React 应用
 │   ├── .env
 │   ├── .env.production
@@ -93,7 +92,12 @@ cccat-login-react/
 
 ## 安装与运行 🚀
 
-### 方法一：一键启动（推荐，Windows 系统）
+### 前提条件
+
+- 安装 Node.js（建议使用 nvm 管理版本）
+- 安装 Git
+
+### 步骤 1：克隆仓库并安装依赖
 
 1. 克隆仓库：
 
@@ -113,31 +117,66 @@ cd cccat-login-react
 npm run install-all
 ```
 
-4. 双击运行 `start-dev.bat` 脚本，自动启动前后端服务：
-   - 后端服务（Node.js 22.17.1）运行在：http://localhost:5000
-   - 前端服务（Node.js 18.18.0）运行在：http://localhost:3000
+### 步骤 2：启动服务（手动启动）
 
-### 方法二：手动启动
+#### 后端启动：
 
-1. 安装依赖（同方法一步骤 1-3）
-
-2. 启动后端服务：
+1. 打开终端（Git Bash 或其他终端工具）
+2. 进入后端目录：
 
 ```bash
-npm run server
+cd server
 ```
 
-3. 启动前端服务（新终端）：
+3. 切换到指定 Node.js 版本：
 
 ```bash
-npm run client
+nvm use 22.17.1
 ```
 
-4. 或同时启动前后端：
+4. 启动后端服务：
+
+```bash
+npm start
+```
+
+- 后端服务运行在：http://localhost:5000
+
+#### 前端启动：
+
+1. 打开新的终端
+2. 进入前端目录：
+
+```bash
+cd client
+```
+
+3. 切换到指定 Node.js 版本：
+
+```bash
+nvm use 18.18.0
+```
+
+4. 启动前端开发服务：
 
 ```bash
 npm run dev
 ```
+
+- 前端服务运行在：http://localhost:3000
+
+#### 快捷启动方式（可选）
+
+同时启动前后端服务（需保持终端运行）：
+
+```bash
+npm run dev
+```
+
+### 验证服务是否正常运行
+
+- 后端测试接口：http://localhost:5000/api/test
+- 前端页面：http://localhost:3000
 
 ## 构建生产版本 📦
 
