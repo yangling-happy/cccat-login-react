@@ -1,3 +1,4 @@
+/* Welcome.css - 采用index配色方案 */
 * {
   margin: 0;
   padding: 0;
@@ -13,49 +14,22 @@ body {
 .welcome-page {
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #fff8e6 0%, #fff0f5 50%, #e6f7ff 100%);
+  background-color: #fff3c4; /* 采用index左侧的背景色 */
   padding-top: 40px;
   position: relative;
   overflow-x: hidden;
 }
 
-/* 添加一些装饰性元素 */
-.welcome-page::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(
-      circle at 20% 80%,
-      rgba(255, 200, 200, 0.1) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 80% 20%,
-      rgba(200, 220, 255, 0.1) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 40% 40%,
-      rgba(255, 255, 200, 0.05) 0%,
-      transparent 50%
-    );
-  pointer-events: none;
-}
-
-/* 导航栏样式保持与全局一致 */
+/* 导航栏样式与index保持一致 */
 .navbar {
   width: 100%;
   height: 40px;
-  background: linear-gradient(90deg, #fee16b 0%, #ffd166 100%);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  background-color: #fee16b;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1000;
-  backdrop-filter: blur(10px);
 }
 
 .navbar ul {
@@ -68,18 +42,16 @@ body {
 
 .navbar a {
   text-decoration: none;
-  color: #5d4037;
-  font-size: 16px;
-  font-weight: 600;
+  color: black;
+  font-size: 20px;
   line-height: 40px;
-  margin-left: 25px;
+  margin-left: 20px;
   display: block;
   transition: all 0.3s ease;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .navbar a:hover {
-  color: #ff6b6b;
+  color: #ff7777;
   transform: translateY(-1px);
 }
 
@@ -98,37 +70,33 @@ body {
 }
 
 .welcome-header h1 {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Times New Roman", Times, sans-serif;
   font-size: 3.5rem;
-  font-weight: 700;
-  color: #ff6b6b;
-  margin-bottom: 0x;
-  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 4px 8px rgba(255, 107, 107, 0.1);
+  font-weight: bold;
+  color: #ffaaaa; /* 采用index的粉色 */
+  margin-bottom: 0px;
+  text-shadow: 5px 5px 5px white;
+  text-align: center;
+  line-height: 1;
+  letter-spacing: -2px;
+  word-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: underline;
   position: relative;
   display: inline-block;
+  transition: all 0.3s ease;
 }
 
-.welcome-header h1::after {
-  content: "";
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100px;
-  height: 3px;
-  background: linear-gradient(90deg, #ff6b6b, #ffd166);
-  border-radius: 2px;
+.welcome-header h1:hover {
+  color: #ff7777;
+  text-shadow: 8px 8px 8px white;
+  transform: translateY(-2px);
 }
 
 .welcome-subtitle {
   font-size: 1.3rem;
-  color: #5d4037;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: 400;
+  color: #5d4037; /* 采用index的深棕色 */
+  font-family: "Lucida Console", Monaco, monospace;
   margin-top: 30px;
   opacity: 0.9;
   line-height: 1.6;
@@ -143,15 +111,13 @@ body {
 }
 
 .welcome-card {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
+  background-color: white;
+  border-radius: 12px;
   padding: 40px 30px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid #fff3c4; /* 采用index左侧的背景色作为边框 */
   position: relative;
   overflow: hidden;
 }
@@ -163,16 +129,16 @@ body {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #ff6b6b, #ffd166, #7cb9ff);
+  background: #ffa2a2; /* 采用index按钮的粉色 */
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
 .welcome-card:hover {
   transform: translateY(-12px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 8px 16px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  border-color: #fee16b; /* 采用index导航栏的黄色 */
+  background-color: #fff8e6; /* 浅黄色背景 */
 }
 
 .welcome-card:hover::before {
@@ -188,6 +154,7 @@ body {
   margin-bottom: 25px;
   transition: all 0.3s ease;
   display: block;
+  color: #ffaaaa; /* 采用index的粉色 */
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
 }
 
@@ -195,8 +162,8 @@ body {
   font-size: 1.5rem;
   margin-bottom: 15px;
   color: #333;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: 600;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-weight: bold;
   position: relative;
 }
 
@@ -204,29 +171,41 @@ body {
   font-size: 1rem;
   color: #666;
   line-height: 1.6;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Lucida Console", Monaco, monospace;
   opacity: 0.8;
 }
 
-/* 为不同卡片添加微妙的颜色差异 */
+/* 为不同卡片添加微妙的颜色差异 - 基于index配色 */
 .welcome-card:nth-child(1):hover {
-  border-color: rgba(255, 107, 107, 0.3);
+  border-color: #ffaaaa; /* Todo卡片用粉色 */
+}
+
+.welcome-card:nth-child(1):hover .card-icon {
+  color: #ff7777;
 }
 
 .welcome-card:nth-child(2):hover {
-  border-color: rgba(124, 185, 255, 0.3);
+  border-color: #fee16b; /* Chat卡片用黄色 */
+}
+
+.welcome-card:nth-child(2):hover .card-icon {
+  color: #ffd166;
 }
 
 .welcome-card:nth-child(3):hover {
-  border-color: rgba(255, 209, 102, 0.3);
+  border-color: #fff3c4; /* Logout卡片用浅黄色 */
+}
+
+.welcome-card:nth-child(3):hover .card-icon {
+  color: #e6b800;
 }
 
 .welcome-footer {
   color: #888;
   font-size: 0.9rem;
   padding-top: 40px;
-  border-top: 1px solid rgba(255, 224, 178, 0.5);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  border-top: 1px solid #ffe0b2;
+  font-family: "Lucida Console", Monaco, monospace;
   position: relative;
 }
 
@@ -236,7 +215,7 @@ body {
   top: -12px;
   left: 50%;
   transform: translateX(-50%);
-  background: #fff8e6;
+  background: #fff3c4; /* 采用index左侧背景色 */
   padding: 0 20px;
   font-size: 1.2rem;
 }
@@ -296,7 +275,7 @@ body {
   }
 }
 
-/* 添加加载动画 */
+/* 添加加载动画 - 保留原有交互 */
 @keyframes fadeInUp {
   from {
     opacity: 0;
