@@ -1,10 +1,17 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import "../Welcome.css"; // 需要创建对应的CSS文件
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../main.jsx";
+import "../Welcome.css";
 
 const Welcome = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const username = location.state?.username || "User";
+  const { user, logout } = useAuth();
+  const username = user?.username || "User";
+  
+  // 处理登出
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <div className="welcome-page">
@@ -42,7 +49,7 @@ const Welcome = () => {
             <p>Have a conversation with friends</p>
           </div>
 
-          <div className="welcome-card" onClick={() => navigate("/")}>
+          <div className="welcome-card" onClick={handleLogout}>
             <div className="card-icon">🚪</div>
             <h3>Logout</h3>
             <p>End your current session</p>

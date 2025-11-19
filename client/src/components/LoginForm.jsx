@@ -1,10 +1,19 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useAuth } from "../main.jsx";
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams(); // 获取 URL 查询参数
   const initialUsername = searchParams.get("username") || "";
+  const { login, isAuthenticated } = useAuth();
+  
+  // 如果已经认证，直接跳转到欢迎页
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/welcome");
+    }
+  }, [isAuthenticated, navigate]);
 
   const [formData, setFormData] = useState({
     username: initialUsername,
@@ -67,8 +76,10 @@ const LoginForm = () => {
         }
 
         // 登录成功
+        const userData = { username: data.username };
+        login(userData); // 更新全局认证状态
         alert("Login successful! Welcome back," + data.username);
-        navigate("/welcome", { state: { username: data.username } }); // 添加跳转逻辑
+        navigate("/welcome"); // 不需要传递state，因为user信息已在context中
       } catch (error) {
         // 显示后端返回的错误或网络错误
         alert(error.message);

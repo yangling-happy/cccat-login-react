@@ -92,6 +92,16 @@
   margin-bottom: 4px;
   font-family: "Lucida Console", Monaco, monospace;
   font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 在线状态指示点 */
+.online-dot {
+  color: #4caf50;
+  font-size: 12px;
+  animation: pulse 2s infinite;
 }
 
 .last-message {
@@ -188,10 +198,12 @@
   flex: 1;
   padding: 24px;
   overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   gap: 16px;
   background-color: #ffffff;
+  word-break: break-word;
 }
 
 .time-separator {
@@ -227,6 +239,28 @@
   font-size: 16px;
   font-family: "Lucida Console", Monaco, monospace;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  word-wrap: break-word;
+  white-space: normal;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* 消息气泡悬停效果 */
+.message-content:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.incoming .message-content:hover {
+  background-color: #fafafa;
+  border-color: #ffa2a2;
+}
+
+.outgoing .message-content:hover {
+  background-color: #ff8c8c;
+  border-color: #ff7777;
 }
 
 /* 接收消息 - 白色背景 */
@@ -268,6 +302,7 @@
   background-color: #fee16b; /* 采用index导航栏颜色 */
   border-top: 2px solid #ffd166;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  position: relative; /* 确保emoji picker可以相对于此元素定位 */
 }
 
 .input-actions {
@@ -389,4 +424,28 @@
 
 .message-area::-webkit-scrollbar-thumb:hover {
   background: #ff7777;
+}
+
+/* 气泡式表情包选择器样式 */
+.emoji-picker {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  right: 100px;
+  background-color: white;
+  border: 2px solid #fee16b;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  max-width: 320px;
+  z-index: 1000;
+}
+
+.emoji-picker::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  right: 20px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: #fee16b transparent transparent transparent;
 }
