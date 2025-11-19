@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import "../Chat.css";
+import "../css/Chat.css";
 
 const Chat = () => {
   // 多聊天会话数据结构

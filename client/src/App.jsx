@@ -8,7 +8,7 @@ import Todo from "./components/ToDo.jsx";
 import Chat from "./components/Chat.jsx";
 import Welcome from "./components/Welcome.jsx";
 import { useAuth } from "./main.jsx";
-import "./index.css";
+import "./css/index.css";
 
 // 定义带左侧区域的布局组件（局部复用，不单独抽离文件）
 const WithLeftSide = () => (

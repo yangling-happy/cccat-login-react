@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import catPaw from "/catPaw.svg";
 import NavBar from "./Navbar";
-import "../Todo.css";
+import "../css/Todo.css";
 
 const Todo = () => {
   // 1. 状态定义区域（预留：可添加任务列表、输入框值等状态）

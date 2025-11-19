@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../main.jsx";
-import "../Welcome.css";
+import "../css/Welcome.css";
 
 const Welcome = () => {
   const navigate = useNavigate();
@@ -19,13 +19,13 @@ const Welcome = () => {
       <nav className="navbar">
         <ul>
           <li>
-            <a href="/">PurrSpace</a>
+            <Link to="/welcome">PurrSpace</Link>
           </li>
           <li>
-            <a href="/todo">Todos</a>
+            <Link to="/todo">Todos</Link>
           </li>
           <li>
-            <a href="/chat">Chat</a>
+            <Link to="/chat">Chat</Link>
           </li>
         </ul>
       </nav>
