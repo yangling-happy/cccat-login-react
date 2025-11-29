@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../css/Chat.css";
+import { useAuth } from "../main"; // 导入认证钩子获取用户信息
 
 const Chat = () => {
+  const { user } = useAuth(); // 获取当前登录用户
+  const wsRef = useRef(null);
+  const [isConnected, setIsConnected] = useState(false);
+  const messageIdRef = useRef(0);
+
   // 多聊天会话数据结构
   const [contacts, setContacts] = useState([
     {
@@ -111,6 +117,153 @@ const Chat = () => {
     );
   };
 
+  // WebSocket连接初始化
+  const initWebSocketConnection = () => {
+    if (!user) return;
+
+    try {
+      // 创建WebSocket连接
+      const wsUrl = `ws://localhost:5000`;
+      wsRef.current = new WebSocket(wsUrl);
+
+      // 连接打开
+      wsRef.current.onopen = () => {
+        console.log("WebSocket连接已建立");
+        setIsConnected(true);
+
+        // 发送用户登录信息
+        wsRef.current.send(
+          JSON.stringify({
+            type: "login",
+            userId: user.id,
+          })
+        );
+      };
+
+      // 接收消息
+      wsRef.current.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+
+          // 处理聊天消息
+          if (data.type === "chat") {
+            handleIncomingMessage(data.from, data.content, data.timestamp);
+          }
+
+          // 处理消息送达确认
+          if (data.type === "delivered") {
+            console.log(`消息 ${data.messageId} 已送达`);
+          }
+
+          // 处理用户状态变化
+          if (data.type === "userStatus") {
+            updateUserStatus(data.userId, data.online);
+          }
+        } catch (error) {
+          console.error("解析WebSocket消息出错:", error);
+        }
+      };
+
+      // 连接关闭
+      wsRef.current.onclose = () => {
+        console.log("WebSocket连接已关闭");
+        setIsConnected(false);
+      };
+
+      // 连接错误
+      wsRef.current.onerror = (error) => {
+        console.error("WebSocket连接错误:", error);
+        setIsConnected(false);
+      };
+    } catch (error) {
+      console.error("初始化WebSocket连接失败:", error);
+    }
+  };
+
+  // 关闭WebSocket连接
+  const closeWebSocketConnection = () => {
+    if (wsRef.current) {
+      wsRef.current.close();
+      wsRef.current = null;
+      setIsConnected(false);
+      console.log("WebSocket连接已手动关闭");
+    }
+  };
+
+  // 发送消息到服务器
+  const sendMessageToServer = (contactId, content) => {
+    if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
+      console.error("WebSocket连接未建立或已关闭");
+      return;
+    }
+
+    const messageId = ++messageIdRef.current;
+
+    wsRef.current.send(
+      JSON.stringify({
+        type: "chat",
+        to: contactId,
+        content: content,
+        messageId: messageId,
+        timestamp: new Date().toISOString(),
+      })
+    );
+
+    return messageId;
+  };
+
+  // 处理收到的消息
+  const handleIncomingMessage = (fromUserId, content, timestamp) => {
+    // 找到对应的联系人
+    const contact = contacts.find(
+      (c) => c.id.toString() === fromUserId.toString()
+    );
+    if (!contact) return;
+
+    const localTimestamp = new Date(timestamp).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    const newMsg = {
+      id: conversations[fromUserId] ? conversations[fromUserId].length + 1 : 1,
+      content: content,
+      timestamp: localTimestamp,
+      incoming: true,
+    };
+
+    // 更新会话消息
+    setConversations((prevConversations) => ({
+      ...prevConversations,
+      [fromUserId]: [...(prevConversations[fromUserId] || []), newMsg],
+    }));
+
+    // 更新联系人列表中的最后一条消息和未读数
+    setContacts((prevContacts) =>
+      prevContacts.map((c) =>
+        c.id.toString() === fromUserId.toString()
+          ? {
+              ...c,
+              lastMessage: content,
+              time: localTimestamp,
+              unread: c.id === selectedContact.id ? c.unread : c.unread + 1,
+            }
+          : c
+      )
+    );
+  };
+
+  // 更新用户在线状态
+  const updateUserStatus = (userId, online) => {
+    setContacts((prevContacts) =>
+      prevContacts.map((c) =>
+        c?.id && userId && c.id.toString() === userId.toString()
+          ? { ...c, online: online }
+          : c
+      )
+    );
+  };
+
   // 消息发送处理函数 - 支持多会话
   const handleSendMessage = () => {
     if (newMessage.trim() === "") return;
@@ -142,10 +295,10 @@ const Chat = () => {
       )
     );
 
-    setNewMessage("");
+    // 通过WebSocket发送消息到服务器
+    sendMessageToServer(selectedContact.id, newMessage);
 
-    // TODO: WebSocket升级时，这里将发送消息到服务器
-    // sendMessageToServer(selectedContact.id, newMessage);
+    setNewMessage("");
   };
 
   // Enter键发送支持
@@ -207,16 +360,100 @@ const Chat = () => {
     }
   }, [selectedContact.id, conversations[selectedContact.id]]);
 
-  // TODO: localStorage存储功能 - 会话持久化
-  useEffect(() => {
-    // loadConversationsFromStorage();
-  }, []);
+  // 从localStorage加载数据
+  const loadDataFromStorage = () => {
+    if (!user) return;
 
-  // TODO: WebSocket连接初始化
+    try {
+      // 加载联系人数据
+      const savedContacts = localStorage.getItem(
+        `chat_contacts_${user.username}`
+      );
+      if (savedContacts) {
+        setContacts(JSON.parse(savedContacts));
+      }
+
+      // 加载会话数据
+      const savedConversations = localStorage.getItem(
+        `chat_conversations_${user.username}`
+      );
+      if (savedConversations) {
+        setConversations(JSON.parse(savedConversations));
+      }
+
+      // 加载选中联系人ID
+      const savedSelectedContactId = localStorage.getItem(
+        `chat_selected_contact_${user.username}`
+      );
+      if (savedSelectedContactId) {
+        const contactId = parseInt(savedSelectedContactId);
+        const contact = savedContacts
+          ? JSON.parse(savedContacts).find((c) => c.id === contactId)
+          : null;
+        if (contact) {
+          setSelectedContact(contact);
+        }
+      }
+
+      console.log("从localStorage加载数据成功");
+    } catch (error) {
+      console.error("从localStorage加载数据失败:", error);
+    }
+  };
+
+  // 保存数据到localStorage
+  const saveDataToStorage = () => {
+    if (!user) return;
+
+    try {
+      // 保存联系人数据
+      localStorage.setItem(
+        `chat_contacts_${user.username}`,
+        JSON.stringify(contacts)
+      );
+
+      // 保存会话数据
+      localStorage.setItem(
+        `chat_conversations_${user.username}`,
+        JSON.stringify(conversations)
+      );
+
+      // 保存选中联系人ID
+      if (selectedContact) {
+        localStorage.setItem(
+          `chat_selected_contact_${user.username}`,
+          selectedContact.id.toString()
+        );
+      }
+
+      console.log("数据已保存到localStorage");
+    } catch (error) {
+      console.error("保存数据到localStorage失败:", error);
+    }
+  };
+
+  // 组件挂载时从localStorage加载数据
   useEffect(() => {
-    // initWebSocketConnection();
-    // return () => closeWebSocketConnection();
-  }, []);
+    loadDataFromStorage();
+  }, [user]); // 当用户变化时重新加载数据
+
+  // 当contacts或conversations变化时保存到localStorage
+  useEffect(() => {
+    // 延迟保存，避免频繁写入
+    const saveTimer = setTimeout(() => {
+      saveDataToStorage();
+    }, 300);
+
+    return () => clearTimeout(saveTimer);
+  }, [contacts, conversations, selectedContact, user]);
+
+  // WebSocket连接初始化
+  useEffect(() => {
+    if (user) {
+      initWebSocketConnection();
+      return () => closeWebSocketConnection();
+    }
+  }, [user]); // 当用户信息变化时重新连接
 
   return (
     <div className="chat-page">

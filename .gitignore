@@ -21,3 +21,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+server/db/cccat.db
+
+server/db/*.db.bak
+server/db/*.sqlite

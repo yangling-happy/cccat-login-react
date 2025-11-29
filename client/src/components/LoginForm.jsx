@@ -7,7 +7,7 @@ const LoginForm = () => {
   const [searchParams] = useSearchParams(); // 获取 URL 查询参数
   const initialUsername = searchParams.get("username") || "";
   const { login, isAuthenticated } = useAuth();
-  
+
   // 如果已经认证，直接跳转到欢迎页
   useEffect(() => {
     if (isAuthenticated) {
